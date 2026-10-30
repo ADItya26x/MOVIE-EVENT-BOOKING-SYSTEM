@@ -1,0 +1,6 @@
+.env
+showtime-hub.sqlite
+showtime-hub.sqlite-shm
+showtime-hub.sqlite-wal
+*.log
+node_modules/

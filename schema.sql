@@ -1,0 +1,70 @@
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE IF NOT EXISTS users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE COLLATE NOCASE,
+  password_hash TEXT NOT NULL,
+  role TEXT NOT NULL DEFAULT 'customer' CHECK (role IN ('customer','admin')),
+  preferred_language TEXT NOT NULL DEFAULT 'Any',
+  preferred_genres TEXT NOT NULL DEFAULT '[]',
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS venues (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  city TEXT NOT NULL,
+  address TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS movies (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  kind TEXT NOT NULL DEFAULT 'movie' CHECK (kind IN ('movie','event')),
+  genre TEXT NOT NULL DEFAULT '',
+  language TEXT NOT NULL DEFAULT 'English',
+  duration_minutes INTEGER,
+  certificate TEXT NOT NULL DEFAULT 'All ages',
+  description TEXT NOT NULL DEFAULT '',
+  art_color TEXT NOT NULL DEFAULT '#287d7c',
+  active INTEGER NOT NULL DEFAULT 1 CHECK(active IN (0,1)),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS shows (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  movie_id INTEGER NOT NULL REFERENCES movies(id) ON DELETE RESTRICT,
+  venue_id INTEGER NOT NULL REFERENCES venues(id) ON DELETE RESTRICT,
+  starts_at TEXT NOT NULL,
+  price REAL NOT NULL CHECK(price >= 0),
+  active INTEGER NOT NULL DEFAULT 1 CHECK(active IN (0,1)),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS seats (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  venue_id INTEGER NOT NULL REFERENCES venues(id) ON DELETE CASCADE,
+  seat_code TEXT NOT NULL,
+  UNIQUE(venue_id, seat_code)
+);
+CREATE TABLE IF NOT EXISTS bookings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  booking_code TEXT NOT NULL UNIQUE,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+  show_id INTEGER NOT NULL REFERENCES shows(id) ON DELETE RESTRICT,
+  total_amount REAL NOT NULL,
+  status TEXT NOT NULL DEFAULT 'confirmed' CHECK(status IN ('confirmed','cancelled')),
+  email_status TEXT NOT NULL DEFAULT 'pending',
+  booked_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS booking_seats (
+  booking_id INTEGER NOT NULL REFERENCES bookings(id) ON DELETE RESTRICT,
+  seat_id INTEGER NOT NULL REFERENCES seats(id) ON DELETE RESTRICT,
+  PRIMARY KEY(booking_id, seat_id)
+);
+CREATE TABLE IF NOT EXISTS sessions (
+  token_hash TEXT PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  expires_at INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_shows_time ON shows(starts_at, active);
+CREATE INDEX IF NOT EXISTS idx_booking_show ON bookings(show_id, status);
+CREATE INDEX IF NOT EXISTS idx_sessions_expiry ON sessions(expires_at);

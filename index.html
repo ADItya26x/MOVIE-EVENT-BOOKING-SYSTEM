@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#173a43" />
+  <title>ShowTime Hub — Book moments</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="locations.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home"><span class="logo-mark">S</span><span>showtime<span class="accent">hub</span></span></a>
+    <label class="location location-select">⌖ <input id="city-filter" type="search" list="india-city-options" autocomplete="off" placeholder="All cities" aria-label="Search or type a city"><datalist id="india-city-options"></datalist></label>
+    <nav><a href="#movies">Movies</a><a href="#events">Events</a><a href="#recommendations">For you</a></nav>
+    <a class="admin-link" href="/admin">Admin</a>
+    <button class="profile" id="account-button" aria-label="Account">Sign in</button>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="hero-copy"><p class="eyebrow">YOUR NEXT GREAT NIGHT OUT</p><h1>Stories worth<br><em>showing up for.</em></h1><p>Find the films, concerts, and live experiences you love. Pick your seats and you’re all set.</p><a class="primary-btn" href="#movies">Explore shows <span>→</span></a></div>
+      <div class="hero-art"><div class="glow"></div><div class="poster-stack"><div class="poster back">ECHO<br><small>OF THE SKY</small></div><div class="poster front"><span>✦</span><b>MIDNIGHT<br>METRO</b><small>IN CINEMAS NOW</small></div></div></div>
+    </section>
+
+    <section class="content-section" id="recommendations"><div class="section-heading"><div><p class="eyebrow">PICKED FOR YOU</p><h2>Recommended</h2><p class="section-note" id="recommendation-note">Explore what’s popular, or sign in to personalize your picks.</p></div><button class="text-btn" id="preferences-button">Set preferences</button></div><div id="recommendations-grid" class="card-grid"></div></section>
+    <section class="content-section" id="movies"><div class="section-heading"><div><p class="eyebrow">ON SCREEN</p><h2>Movies near you</h2></div><span id="movie-count" class="section-note"></span></div><div id="movies-grid" class="card-grid"></div></section>
+    <section class="content-section event-section" id="events"><div class="section-heading"><div><p class="eyebrow">GO OUT</p><h2>Live events</h2></div><span id="event-count" class="section-note"></span></div><div id="events-grid" class="event-grid"></div></section>
+  </main>
+
+  <footer id="about"><a class="brand" href="#home"><span class="logo-mark">S</span><span>showtime<span class="accent">hub</span></span></a><p>Make plans. Make memories.</p><p class="tiny">ShowTime Hub · © 2026</p></footer>
+
+  <div class="modal" id="booking-modal" aria-hidden="true"><div class="modal-box"><button class="close" data-close="booking-modal" aria-label="Close">×</button><div id="booking-content"></div></div></div>
+  <div class="modal" id="account-modal" aria-hidden="true"><div class="modal-box account-box"><button class="close" data-close="account-modal" aria-label="Close">×</button><div id="account-content"></div></div></div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>

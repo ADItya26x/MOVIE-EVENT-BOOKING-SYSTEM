@@ -1,0 +1,1 @@
+.location-select input{width:126px;border:0;background:transparent;font:inherit;color:inherit;outline:0}.location-select input::placeholder{color:var(--muted);opacity:1}.location-select input:focus{width:190px}.location-select input::-webkit-search-cancel-button{cursor:pointer}@media(max-width:700px){.location-select input{width:110px}.location-select input:focus{width:145px}}
